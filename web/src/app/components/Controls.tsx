@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { PlaylistData } from '../../lib/types';
 
 interface ControlsProps {
@@ -14,6 +14,12 @@ export default function Controls({ onGenerate, isLoading }: ControlsProps) {
   const [playlistName, setPlaylistName] = useState('My TypeVibe Playlist');
   const [genre, setGenre] = useState('Hip Hop');
   const [songCount, setSongCount] = useState(10);
+  const rangeRef = useRef<HTMLInputElement>(null);
+
+  const handleSongCountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = Number(e.target.value);
+    setSongCount(newValue);
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -113,11 +119,12 @@ export default function Controls({ onGenerate, isLoading }: ControlsProps) {
               <span className="range-value">{songCount} songs</span>
             </label>
             <input
+              ref={rangeRef}
               type="range"
               min="5"
               max="20"
               value={songCount}
-              onChange={(e) => setSongCount(Number(e.target.value))}
+              onChange={handleSongCountChange}
               className="range-input"
             />
             <div className="range-labels">
