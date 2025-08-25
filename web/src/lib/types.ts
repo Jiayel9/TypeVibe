@@ -25,3 +25,20 @@ export type TrackSummary = {
   artists: string; // "Artist A, Artist B"
   uri: string; // "spotify:track:..."
 };
+
+// New types for the playlist generator
+export interface Track {
+  id: string;
+  title: string;
+  artist: string;
+  duration: string;
+  albumArt: string;
+}
+
+export interface PlaylistData {
+  mood: string;
+  funMode: boolean;
+  playlistName: string;
+  genre: string;
+  songCount: number;
+}

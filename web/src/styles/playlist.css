@@ -1,0 +1,241 @@
+/* CSS Reset for playlist */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Playlist Component */
+.playlist {
+  flex: 1;
+  padding: var(--space-6);
+  padding-top: 0;
+  transition: all var(--transition-normal);
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.playlist-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-6);
+}
+
+.playlist-title {
+  font-size: var(--text-2xl);
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.playlist-count {
+  color: var(--color-text-secondary);
+  font-size: var(--text-sm);
+  font-weight: 500;
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: var(--space-12) var(--space-4);
+  color: var(--color-text-secondary);
+}
+
+.empty-state-icon {
+  font-size: 4rem; /* 64px */
+  margin-bottom: var(--space-4);
+}
+
+.empty-state-title {
+  font-size: var(--text-lg);
+  color: var(--color-text-primary);
+  margin: 0 0 var(--space-2) 0;
+}
+
+.empty-state-description {
+  font-size: var(--text-sm);
+  margin: 0;
+}
+
+/* Track List */
+.track-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+/* Track Card */
+.track-card {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-6);
+  background-color: var(--color-surface);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--color-border);
+  transition: all var(--transition-normal);
+  margin-bottom: var(--space-1);
+}
+
+.track-card:hover {
+  transform: scale(1.01);
+  box-shadow: var(--shadow-md);
+}
+
+.track-number {
+  font-size: var(--text-3xl);
+  font-weight: 700;
+  color: var(--color-text-muted);
+  width: 2.5rem;
+  text-align: center;
+}
+
+.track-artwork {
+  width: 3.5rem; /* 56px */
+  height: 3.5rem;
+  background-color: var(--color-border);
+  border-radius: var(--radius-xl);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--text-xl);
+  overflow: hidden;
+}
+
+.track-artwork img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: var(--radius-xl);
+}
+
+.track-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.track-title {
+  font-size: var(--text-base);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin: 0 0 var(--space-1) 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.track-artist {
+  font-size: var(--text-sm);
+  font-weight: 400;
+  color: var(--color-text-secondary);
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.track-duration {
+  font-size: var(--text-sm);
+  font-weight: 400;
+  color: var(--color-text-muted);
+  width: 3rem;
+  text-align: right;
+}
+
+.track-play {
+  width: 2.5rem;
+  height: 2.5rem;
+  background-color: var(--color-primary);
+  border: none;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-fast);
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+}
+
+.track-play:hover {
+  background-color: var(--color-primary-hover);
+  transform: scale(1.05);
+}
+
+.track-play-icon {
+  width: 0;
+  height: 0;
+  border-left: 0.375rem solid var(--color-surface);
+  border-top: 0.25rem solid transparent;
+  border-bottom: 0.25rem solid transparent;
+  margin-left: 0.125rem;
+}
+
+/* Loading Skeleton */
+.skeleton {
+  background: linear-gradient(90deg, var(--color-border) 25%, var(--color-text-muted) 50%, var(--color-border) 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.skeleton-track {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-4);
+  background-color: var(--color-background);
+  border-radius: var(--radius-lg);
+}
+
+.skeleton-number {
+  width: 2rem;
+  height: 2rem;
+  border-radius: var(--radius-sm);
+}
+
+.skeleton-artwork {
+  width: 3rem;
+  height: 3rem;
+  border-radius: var(--radius-lg);
+}
+
+.skeleton-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.skeleton-title {
+  height: 1rem;
+  border-radius: var(--radius-sm);
+  width: 75%;
+}
+
+.skeleton-artist {
+  height: 0.75rem;
+  border-radius: var(--radius-sm);
+  width: 50%;
+}
+
+.skeleton-duration {
+  width: 3rem;
+  height: 1rem;
+  border-radius: var(--radius-sm);
+}
+
+.skeleton-play {
+  width: 2rem;
+  height: 2rem;
+  border-radius: var(--radius-full);
+}

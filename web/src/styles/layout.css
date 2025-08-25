@@ -1,0 +1,66 @@
+/* CSS Reset for layout */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Main Layout */
+.main-container {
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: var(--space-8) var(--space-6);
+}
+
+@media (min-width: 48em) {
+  .main-container {
+    padding: var(--space-8) var(--space-8);
+  }
+}
+
+@media (min-width: 64em) {
+  .main-container {
+    padding: var(--space-8) var(--space-10);
+  }
+}
+
+.main-grid {
+  display: grid;
+  gap: var(--space-8);
+}
+
+@media (min-width: 64em) {
+  .main-grid {
+    grid-template-columns: 1.2fr 1.5fr;
+    gap: var(--space-6);
+  }
+}
+
+/* Footer */
+.footer {
+  position: fixed;
+  bottom: var(--space-4);
+  right: var(--space-4);
+}
+
+.footer-help {
+  width: 3rem;
+  height: 3rem;
+  background-color: var(--color-primary);
+  color: var(--color-surface);
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-lg);
+  transition: background-color var(--transition-fast);
+  cursor: pointer;
+}
+
+.footer-help:hover {
+  background-color: var(--color-primary-hover);
+}
+
+.footer-help-icon {
+  font-size: var(--text-lg);
+}
