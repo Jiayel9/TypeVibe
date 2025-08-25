@@ -1,6 +1,6 @@
 // src/lib/spotify.ts
 import { Buffer } from "node:buffer";
-import type { Spec, SpotifyTrack, AppTrack } from "./types";
+import { Spec, SpotifyTrack, AppTrack, simplifyTrack } from "./types";
 
 const ACCOUNTS = "https://accounts.spotify.com";
 const API = "https://api.spotify.com/v1";
@@ -107,13 +107,7 @@ async function searchTracks(
 
   const json: any = await res.json();
   const items: SpotifyTrack[] = json?.tracks?.items ?? [];
-  return items.map((t) => ({
-    id: t.id,
-    uri: t.uri,
-    name: t.name,
-    artists: (t.artists ?? []).map((a: any) => a.name).join(", "),
-    albumArt: t.album.images[1]?.url ?? "", // medium-sized album art,
-  }));
+  return items.map((t) => simplifyTrack(t));
 }
 
 // Build short, genre-flavored queries from Spec
