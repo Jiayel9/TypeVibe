@@ -18,7 +18,7 @@ export async function POST(req: Request) {
       market: "US",
     });
 
-    return NextResponse.json({ spec, tracks }, { status: 200 });
+    return NextResponse.json({ spec, tracks }, { status: 200 }); // Return object includes spec and tracks
   } catch (e: any) {
     console.error("/api/generate error:", e);
     return NextResponse.json(

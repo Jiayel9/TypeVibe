@@ -1,6 +1,6 @@
 // src/lib/spotify.ts
 import { Buffer } from "node:buffer";
-import type { Spec, TrackSummary } from "./types";
+import type { Spec, SpotifyTrack, AppTrack } from "./types";
 
 const ACCOUNTS = "https://accounts.spotify.com";
 const API = "https://api.spotify.com/v1";
@@ -75,18 +75,12 @@ function dedupeById<T extends { id: string }>(arr: T[]): T[] {
 }
 
 // ---------------- Search primitives ----------------
-type SpotifyTrack = {
-  id: string;
-  uri: string;
-  name: string;
-  artists: Array<{ name: string }>;
-};
 
 async function searchTracks(
   token: string,
   query: string,
   opts?: { market?: string; limit?: number }
-): Promise<TrackSummary[]> {
+): Promise<AppTrack[]> {
   const url = new URL(`${API}/search`);
   url.search = new URLSearchParams({
     q: query,
@@ -118,6 +112,7 @@ async function searchTracks(
     uri: t.uri,
     name: t.name,
     artists: (t.artists ?? []).map((a: any) => a.name).join(", "),
+    albumArt: t.album.images[1]?.url ?? "", // medium-sized album art,
   }));
 }
 
@@ -143,12 +138,12 @@ export async function recommendTracksViaSearch(
   token: string,
   spec: Spec,
   opts?: { market?: string }
-): Promise<TrackSummary[]> {
+): Promise<AppTrack[]> {
   const queries = buildQueries(spec);
   const market = opts?.market ?? DEFAULT_MARKET;
   const target = Math.min(spec.targetTracks ?? 30, 100);
 
-  const buckets: TrackSummary[][] = [];
+  const buckets: AppTrack[][] = [];
   for (const q of queries) {
     const tracks = await searchTracks(token, q, {
       market,
@@ -158,7 +153,7 @@ export async function recommendTracksViaSearch(
   }
 
   // round-robin merge to mix buckets
-  const merged: TrackSummary[] = [];
+  const merged: AppTrack[] = [];
   let i = 0;
   while (merged.length < target) {
     let added = false;
@@ -181,6 +176,6 @@ export async function recommendTracks(
   token: string,
   spec: Spec,
   opts?: { market?: string }
-): Promise<TrackSummary[]> {
+): Promise<AppTrack[]> {
   return recommendTracksViaSearch(token, spec, opts);
 }

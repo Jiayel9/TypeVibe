@@ -18,22 +18,16 @@ export type Spec = {
   }>;
 };
 
-/** Track Summary for requested song*/
-export type TrackSummary = {
-  id: string; // Spotify track ID
-  name: string; // Track name
-  artists: string; // "Artist A, Artist B"
-  uri: string; // "spotify:track:..."
-};
-
 // New types for the playlist generator
-export interface Track {
+export type SpotifyTrack = {
   id: string;
-  title: string;
-  artist: string;
-  duration: string;
-  albumArt: string;
-}
+  uri: string;
+  name: string;
+  artists: { name: string }[]; // minimal artist info
+  album: {
+    images: { url: string }[]; // just URLs (ignore height/width if you don’t need them)
+  };
+};
 
 export interface PlaylistData {
   mood: string;
@@ -41,4 +35,22 @@ export interface PlaylistData {
   playlistName: string;
   genre: string;
   songCount: number;
+}
+
+export type AppTrack = {
+  id: string;
+  uri: string;
+  name: string;
+  artists: string; // flattened: "Artist A, Artist B"
+  albumArt: string; // one URL (medium or fallback)
+};
+
+function simplifyTrack(t: SpotifyTrack): AppTrack {
+  return {
+    id: t.id,
+    uri: t.uri,
+    name: t.name,
+    artists: t.artists.map((a) => a.name).join(", "),
+    albumArt: t.album.images[1]?.url ?? "", // medium size or fallback
+  };
 }
