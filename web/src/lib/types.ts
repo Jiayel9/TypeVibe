@@ -18,7 +18,7 @@ export type Spec = {
   }>;
 };
 
-// New types for the playlist generator
+// SpotifyTrack is the object containing info from raw Spotfify Response Object
 export type SpotifyTrack = {
   id: string;
   uri: string;
@@ -37,6 +37,7 @@ export interface PlaylistData {
   songCount: number;
 }
 
+// Formatted Object for Front end use
 export type AppTrack = {
   id: string;
   uri: string;
@@ -45,7 +46,7 @@ export type AppTrack = {
   albumArt: string; // one URL (medium or fallback)
 };
 
-function simplifyTrack(t: SpotifyTrack): AppTrack {
+export function simplifyTrack(t: SpotifyTrack): AppTrack {
   return {
     id: t.id,
     uri: t.uri,
