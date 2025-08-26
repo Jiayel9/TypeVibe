@@ -1,7 +1,7 @@
-import { Track } from '../../lib/types';
+import { AppTrack } from '../../lib/types';
 
 interface TrackCardProps {
-  track: Track;
+  track: AppTrack;
   trackNumber: number;
 }
 
@@ -17,7 +17,7 @@ export default function TrackCard({ track, trackNumber }: TrackCardProps) {
       <div className="track-artwork">
         <img
           src={track.albumArt}
-          alt={`${track.title} album art`}
+          alt={`${track.name} album art`}
           onError={(e) => {
             const target = e.target as HTMLImageElement;
             target.style.display = 'none';
@@ -29,13 +29,13 @@ export default function TrackCard({ track, trackNumber }: TrackCardProps) {
       
       {/* Track Info */}
       <div className="track-info">
-        <h3 className="track-title">{track.title}</h3>
-        <p className="track-artist">{track.artist}</p>
+        <h3 className="track-title">{track.name}</h3>
+        <p className="track-artist">{track.artists}</p>
       </div>
       
-      {/* Duration */}
+      {/* Duration - AppTrack doesn't have duration, so we'll show a placeholder */}
       <div className="track-duration">
-        {track.duration}
+        --:--
       </div>
       
       {/* Play Button */}

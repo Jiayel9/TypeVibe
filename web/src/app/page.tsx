@@ -4,43 +4,43 @@ import { useState } from 'react';
 import Header from './components/Header';
 import Controls from './components/Controls';
 import Playlist from './components/Playlist';
-import { Track, PlaylistData } from '../lib/types';
+import { AppTrack, PlaylistData } from '../lib/types';
 
 // Placeholder tracks for demo
-const mockTracks: Track[] = [
+const mockTracks: AppTrack[] = [
   {
     id: '1',
-    title: 'Midnight Vibes',
-    artist: 'Luna Echo',
-    duration: '3:24',
+    uri: 'spotify:track:mock1',
+    name: 'Midnight Vibes',
+    artists: 'Luna Echo',
     albumArt: 'https://via.placeholder.com/48x48/4A5568/FFFFFF?text=MV'
   },
   {
     id: '2',
-    title: 'Electric Dreams',
-    artist: 'Neon Pulse',
-    duration: '4:12',
+    uri: 'spotify:track:mock2',
+    name: 'Electric Dreams',
+    artists: 'Neon Pulse',
     albumArt: 'https://via.placeholder.com/48x48/805AD5/FFFFFF?text=ED'
   },
   {
     id: '3',
-    title: 'Vintage Soul',
-    artist: 'The Vinyl Collective',
-    duration: '2:58',
+    uri: 'spotify:track:mock3',
+    name: 'Vintage Soul',
+    artists: 'The Vinyl Collective',
     albumArt: 'https://via.placeholder.com/48x48/DD6B20/FFFFFF?text=VS'
   },
   {
     id: '4',
-    title: 'Acoustic Harmony',
-    artist: 'String Theory',
-    duration: '3:45',
+    uri: 'spotify:track:mock4',
+    name: 'Acoustic Harmony',
+    artists: 'String Theory',
     albumArt: 'https://via.placeholder.com/48x48/38A169/FFFFFF?text=AH'
   },
   {
     id: '5',
-    title: 'Studio Sessions',
-    artist: 'The Producers',
-    duration: '5:21',
+    uri: 'spotify:track:mock5',
+    name: 'Studio Sessions',
+    artists: 'The Producers',
     albumArt: 'https://via.placeholder.com/48x48/2B6CB0/FFFFFF?text=SS'
   }
 ];
@@ -48,7 +48,7 @@ const mockTracks: Track[] = [
 export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [playlistName, setPlaylistName] = useState('My TypeVibe Playlist');
-  const [tracks, setTracks] = useState<Track[]>([]);
+  const [tracks, setTracks] = useState<AppTrack[]>([]);
   const [hasGenerated, setHasGenerated] = useState(false);
 
   const handleGenerate = async (data: PlaylistData) => {
@@ -56,11 +56,52 @@ export default function Home() {
     setPlaylistName(data.playlistName);
     setHasGenerated(true);
     
-    // Delay
-    await new Promise(resolve => setTimeout(resolve, 2000));
+    try {
+      console.log('Sending mood to API:', data.mood);
+      
+      // Fetch tracks from Spotify API using the user's mood
+      const response = await fetch('/api/generate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          sentence: data.mood
+        }),
+      });
+      
+      console.log('API Response status:', response.status);
+      
+      if (response.ok) {
+        const result = await response.json();
+        console.log('API Response data:', result);
+        
+        const spotifyTracks: AppTrack[] = result.tracks || [];
+        console.log('Spotify tracks received:', spotifyTracks.length);
+        
+        if (spotifyTracks.length > 0) {
+          console.log('First Spotify track:', spotifyTracks[0]);
+          // Use real tracks from API, limit to requested song count
+          const finalTracks = spotifyTracks.slice(0, data.songCount);
+          console.log('Final tracks to display:', finalTracks);
+          setTracks(finalTracks);
+        } else {
+          console.log('No Spotify tracks returned, using mock tracks');
+          // Fallback to mock tracks if API returns no tracks
+          setTracks(mockTracks.slice(0, data.songCount));
+        }
+      } else {
+        const errorText = await response.text();
+        console.error('API call failed:', response.status, errorText);
+        // Fallback to mock data if API call fails
+        setTracks(mockTracks.slice(0, data.songCount));
+      }
+    } catch (error) {
+      console.error('Error fetching from Spotify API:', error);
+      // Fallback to mock data
+      setTracks(mockTracks.slice(0, data.songCount));
+    }
     
-    // Mock data for demo
-    setTracks(mockTracks.slice(0, data.songCount));
     setIsLoading(false);
   };
 
