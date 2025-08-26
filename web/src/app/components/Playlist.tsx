@@ -1,9 +1,9 @@
 import TrackCard from './TrackCard';
-import { Track } from '../../lib/types';
+import { AppTrack } from '../../lib/types';
 
 interface PlaylistProps {
   playlistName: string;
-  tracks: Track[];
+  tracks: AppTrack[];
   isLoading: boolean;
   hasGenerated: boolean;
 }
